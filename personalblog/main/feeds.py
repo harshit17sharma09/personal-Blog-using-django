@@ -4,9 +4,9 @@ from .models import Post
 
 
 class LatestPostsFeed(Feed):
-    title = 'My blog'
-    link = '/blog/'
-    description = 'New posts of my blog.'
+    title = 'My main'
+    link = '/main/'
+    description = 'New posts of my main.'
 
     def items(self):
         return Post.published.all()[:5]

@@ -29,7 +29,7 @@ def post_list(request, tag_slug=None):
         posts = paginator.page(paginator.num_pages)
 
     return render(request,
-                  'blog/post/list.html',
+                  'main/post/list.html',
                   {'page': page,
                    'posts': posts,
                    'tag': tag})
@@ -68,7 +68,7 @@ def post_detail(request, year, month, day, post):
                                 .order_by('-same_tags','-publish')[:4]
 
     return render(request,
-                  'blog/post/detail.html',
+                  'main/post/detail.html',
                   {'post': post,
                    'comments': comments,
                    'new_comment': new_comment,
@@ -80,7 +80,7 @@ class PostListView(ListView):
     queryset = Post.published.all()
     context_object_name = 'posts'
     paginate_by = 3
-    template_name = 'blog/post/list.html'
+    template_name = 'main/post/list.html'
 
  
 def post_share(request, post_id):
@@ -98,12 +98,12 @@ def post_share(request, post_id):
                                           post.get_absolute_url())
             subject = '{} ({}) recommends you reading "{}"'.format(cd['name'], cd['email'], post.title)
             message = 'Read "{}" at {}\n\n{}\'s comments: {}'.format(post.title, post_url, cd['name'], cd['comments'])
-            send_mail(subject, message, 'admin@myblog.com',
+            send_mail(subject, message, 'admin@mymain.com',
  [cd['to']])
             sent = True
     else:
         form = EmailPostForm()
-    return render(request, 'blog/post/share.html', {'post': post,
+    return render(request, 'main/post/share.html', {'post': post,
                                                     'form': form,
                                                     'sent': sent})
 
@@ -120,7 +120,7 @@ def post_search(request):
                 similarity=TrigramSimilarity('title', query),
             ).filter(similarity__gt=0.3).order_by('-similarity')
     return render(request,
-                  'blog/post/search.html',
+                  'main/post/search.html',
                   {'form': form,
                    'query': query,
                    'results': results})
